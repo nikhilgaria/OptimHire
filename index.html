@@ -5,9 +5,10 @@
 </head>
 <div><h2>OptimHire Query Portal</h2>
 </div>
-<div><button data-modal-target="#modal" class="btn" id="open">Open</button>
-<button data-modal-target="#modal" class="btn" id="open">Open</button>
-
+  <button data-modal-target="#modal" class="btn" id="open">Open</button>
+        <div class="modal" id="modal">
+            <div class="modal-header">
+                <div class="title">Open</div>
                 <button data-modal-close class="closebtn">&times;
 
                 </button>
@@ -28,10 +29,210 @@
                     <i class='bx bx-right-arrow-alt tooltip'></i>
                 </button>
             </div>
-            <script>
-  <link rel="stylesheet" href="script.js">
-</script>
+            
         </div>
 
         <div id="overlay"></div>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap');
+
+*,::after,::before{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    background: linear-gradient(180deg,#FB1834, #FB2B90);
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.btn{
+    background: none;
+    padding: 10px;
+    background-color: rgba(0,0,0,0.5);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem 2rem;
+    margin-top: 2rem;
+}
+
+.modal{
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%, -50%) scale(0);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 8px;
+    padding: 1rem;
+    z-index: 15;
+    background: rgba(255,255,255,0.4);
+    width: 500px;
+    max-width: 80%;
+    transition: 200ms ease-in-out;
+    box-shadow: 0 25px 45px rgba(0,0,0,0.1);
+    min-height: 30vh;
+}
+
+.modal.active{
+    transform:translate(-50%, -50%) scale(1);
+}
+
+.modal-header{
+    padding: 0.5rem 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid rgba(255,255,255,0.4);
+}
+
+.modal-footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 10px;
+}
+
+.modal-header .title{
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.modal-header .closebtn{
+    cursor: pointer;
+    border: none;
+    font-size: 2rem;
+    outline: none;
+    background: none;
+    color: #fff;
+}
+
+.modal-body{
+    padding: 0.5rem 10px;;
+}
+
+#overlay {
+    position: fixed;
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: 200ms ease-in-out;
+}
+
+#overlay.active {
+    pointer-events:all;
+    opacity: 1;
+}
+
+.tooltip{
+    font-size: 2rem;
+    transition: 200ms ease-in-out;
+}
+
+.tool{
+    font-size: 2rem;
+}
+
+.nextbtn{
+    background: none;
+    padding: 10px;
+    background-color: rgba(0,0,0,0.5);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.2rem 0.8rem;
+    cursor: pointer;
+}
+
+.tooltip.active{
+   transform: rotate(180deg)
+}
+
+.title,
+.desc{
+    color: #fff;
+}
+
+.current{
+    display: grid;
+    place-items: center;
+    position: relative;
+    transition: 0.4s;
+}
+
+.next{
+    display: none;
+    transition: 0.2s;
+}
+
+.current.inactive{
+    display: none;
+}
+
+.next.active{
+    display: grid;
+    place-items: center;
+}
+
+</style>
+<script>
+const openBtn = document.querySelectorAll('[data-modal-target]')
+const closeBtn = document.querySelectorAll("[data-modal-close]")
+const overlay = document.getElementById("overlay")
+const nextbtn = document.querySelector('.nextbtn')
+const currentParagraph = document.querySelector('.current')
+const nextParagraph = document.querySelector('.next')
+const tooltip = document.querySelector('.tooltip')
+
+nextbtn.addEventListener('click', (() => {
+    currentParagraph.classList.toggle('inactive')
+    nextParagraph.classList.toggle('active')
+    tooltip.classList.toggle('active')
+}))
+
+openBtn.forEach((btn) => {
+    const modal = document.querySelector(btn.dataset.modalTarget) //Checks the target of our data-modal-target. could have also used '.modal'
+    btn.addEventListener('click', (() => {
+    openModal(modal)
+    }))
+})
+
+closeBtn.forEach((btn) => {
+    const modal = btn.closest(".modal")
+    btn.addEventListener('click', (() => {
+    closeModal(modal)
+    }))  
+})
+
+overlay.addEventListener('click', (() => {
+    const modals = document.querySelectorAll('.modal.active')
+    modals.forEach((modal) => {
+    closeModal(modal)
+    })  
+}))
+
+
+function openModal(modal){
+    if(modal == undefined) return
+    modal.classList.add('active')
+    overlay.classList.add('active')
+}
+
+function closeModal(modal){
+    if(modal == undefined) return
+    modal.classList.remove('active')
+    overlay.classList.remove('active')
+}
+
+</script>
 </html>
